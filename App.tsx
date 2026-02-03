@@ -11,14 +11,24 @@ import ProductCard from './components/ProductCard';
 import ProductForm from './components/ProductForm';
 import ProductDetailModal from './components/ProductDetailModal';
 
-// استيراد المنتجات مباشرة من ملف JSON
+// 1. استيراد الملفين
 import initialProducts from './data/products.json';
+import moreProducts from './data/moreProducts.json';
 
-// تحديد النوع بشكل صريح (مهم لتجنب أخطاء TypeScript)
-const productsFromJson: Product[] = initialProducts as Product[];
+// 2. دمج البيانات ومعالجتها قبل تشغيل المكون
+const mergedData: Product[] = [
+  ...(Array.isArray(initialProducts) ? initialProducts.flat() : []),
+  ...(Array.isArray(moreProducts) ? moreProducts.flat() : [])
+] as Product[];
+
+// حذف المنتجات المكررة (بناءً على الـ id) لضمان استقرار التطبيق
+const finalInitialProducts = mergedData.filter((item, index, self) =>
+  item && item.id && self.findIndex(t => t.id === item.id) === index
+);
 
 const App: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>(productsFromJson);
+  // استخدام البيانات المدمجة في الحالة الابتدائية
+  const [products, setProducts] = useState<Product[]>(finalInitialProducts);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showCart, setShowCart] = useState(false);
@@ -41,7 +51,6 @@ const App: React.FC = () => {
 
   const zadLogo = "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-1/615512750_1532706574470230_2137950251770969990_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=111&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=DBlRHtNUA5gQ7kNvwGcQkXv&_nc_oc=AdnPbyCOkgb8C0B0i8dS10KruWYFSTXilBM3aYF49KX6fVj9E3hRw9FBocCHWDFDljQ&_nc_zt=24&_nc_ht=scontent.fcai19-12.fna&_nc_gid=pczF0xNpyk_CH7Q5RXNE3g&oh=00_AfsySIrqeJPoPkF6CC6aReW0iAcVUEEha-NvExV7UWM5aw&oe=6987046F";
 
-  // تحميل السلة فقط من localStorage
   useEffect(() => {
     const savedCart = localStorage.getItem('zad-v4-cart');
     if (savedCart) {
@@ -67,7 +76,6 @@ const App: React.FC = () => {
     }
   }, [searchQuery]);
 
-  // حفظ السلة فقط
   useEffect(() => {
     localStorage.setItem('zad-v4-cart', JSON.stringify(cart));
   }, [cart]);
@@ -83,18 +91,17 @@ const App: React.FC = () => {
 
   const filteredProducts = useMemo(() => {
     const s = searchQuery.toLowerCase();
-
     return products.filter(p => {
-      if (typeof p.name !== 'string') return false;
-
+      // حماية إضافية ضد البيانات غير النصية
+      const productName = typeof p.name === 'string' ? p.name.toLowerCase() : '';
       const category = typeof p.category === 'string' ? p.category : 'أخرى';
+
       const matchesCategory = activeCategory === 'الكل' || category === activeCategory;
-      const matchesSearch = p.name.toLowerCase().includes(s);
+      const matchesSearch = productName.includes(s);
 
       return matchesCategory && matchesSearch;
     });
   }, [products, activeCategory, searchQuery]);
-
 
   const scrollToProducts = () => {
     productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -295,9 +302,9 @@ const App: React.FC = () => {
           <div className="flex items-center gap-2 md:gap-3 shrink-0">
             <button
               onClick={() => setIsAdmin(!isAdmin)}
-              className={`hidden flex items-center gap-2 px-3 md:px-5 py-3 rounded-2xl font-black text-[10px] md:text-xs transition-all border-2 ${isAdmin
-                  ? 'bg-[#FDFBF7] text-[#3D2B1F] border-[#D8C6A8]/40 hover:border-[#C15E28]'
-                  : 'bg-[#C15E28] text-white border-[#C15E28] shadow-lg'
+              className={`flex items-center gap-2 px-3 md:px-5 py-3 rounded-2xl font-black text-[10px] md:text-xs transition-all border-2 ${isAdmin
+                ? 'bg-[#FDFBF7] text-[#3D2B1F] border-[#D8C6A8]/40 hover:border-[#C15E28]'
+                : 'bg-[#C15E28] text-white border-[#C15E28] shadow-lg'
                 }`}
             >
               {isAdmin ? <User size={16} /> : <Settings size={16} />}
@@ -399,26 +406,11 @@ const App: React.FC = () => {
                   </button>
                 ))}
               </div>
-              {isSearching && (
-                <div className="hidden md:flex items-center gap-2 px-4 py-2 bg-[#C15E28]/5 rounded-xl border border-[#C15E28]/10 animate-pulse">
-                  <Loader2 size={14} className="text-[#C15E28] animate-spin" />
-                  <span className="text-[10px] font-black text-[#C15E28]">جاري البحث...</span>
-                </div>
-              )}
             </div>
           )}
 
           {/* Results Container */}
           <div className={`relative transition-all duration-500 ${isSearching ? 'opacity-60 blur-[1px]' : 'opacity-100 blur-0'}`}>
-            {isSearching && (
-              <div className="absolute inset-0 z-10 flex items-start justify-center pt-20 bg-white/5 pointer-events-none">
-                <div className="px-6 py-3 bg-[#3D2B1F] text-white rounded-full shadow-2xl flex items-center gap-3 animate-bounce">
-                  <Sparkles size={16} className="text-[#D8C6A8]" />
-                  <span className="text-xs font-black">بندورلك على أحسن العروض...</span>
-                </div>
-              </div>
-            )}
-
             <div className="product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
               {filteredProducts.map((product, idx) => (
                 <div
@@ -448,17 +440,6 @@ const App: React.FC = () => {
             </div>
             <h3 className="text-xl font-black text-[#3D2B1F] mb-2">للأسف ملحقناش نلاقي المنتج ده</h3>
             <p className="text-sm font-medium text-gray-500">جربي تدوري بكلمة تانية يا ست الكل 🤍</p>
-          </div>
-        )}
-
-        {products.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-24 md:py-32 text-center animate-fade-up">
-            <div className="w-24 h-24 md:w-36 md:h-36 bg-white rounded-[3rem] md:rounded-[4.5rem] shadow-2xl flex items-center justify-center text-[#D8C6A8] mb-10 border border-[#D8C6A8]/10 relative group">
-              <ShoppingBag size={48} className="group-hover:scale-110 transition-transform" />
-              {isAdmin && <div className="absolute -top-3 -right-3 bg-[#C15E28] text-white p-3 rounded-full animate-bounce shadow-xl"><Plus size={24} strokeWidth={3} /></div>}
-            </div>
-            <h3 className="text-2xl md:text-3xl font-black text-[#3D2B1F] mb-4">{isAdmin ? 'قائمتك مستنية أول عرض ليها' : 'المنيو لسه فاضي يا ست الكل'}</h3>
-            {isAdmin && <button onClick={() => setShowForm(true)} className="bg-[#C15E28] text-white px-12 md:px-16 py-5 md:py-6 rounded-2xl md:rounded-[2rem] font-black shadow-2xl hover:bg-[#A84E1D] transition-all active:scale-95 text-base md:text-xl shadow-[#C15E28]/20">إضافة أول عرض سعر 🔥</button>}
           </div>
         )}
       </main>
@@ -542,32 +523,13 @@ const App: React.FC = () => {
       {/* Footer */}
       <footer className="py-12 md:py-16 text-center no-print bg-white/50 border-t border-[#D8C6A8]/20 mt-20">
         <div className="max-w-4xl mx-auto px-6 flex flex-col items-center">
-
           <div className="flex flex-col items-center mb-6">
             <div className="w-14 h-14 md:w-20 md:h-20 rounded-2xl overflow-hidden border-2 border-[#D8C6A8]/30 mb-4 shadow-xl">
               <img src={zadLogo} alt="زاد" className="w-full h-full object-cover" />
             </div>
             <p className="text-sm font-black text-[#3D2B1F] tracking-[0.3em] uppercase opacity-60">ZAD PREMIUM STORE</p>
           </div>
-
           <p className="text-xs md:text-sm font-bold text-[#C15E28] mb-8">زاد المتميز – البيت دايماً عَمْرَان 🤍</p>
-
-          <div className="w-full max-w-[200px] h-px bg-gradient-to-r from-transparent via-[#D8C6A8]/40 to-transparent mb-8"></div>
-
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">التطوير البرمجى بواسطة</span>
-            <a
-              href="https://www.facebook.com/mohamed.hossam.714553?locale=ar_AR"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-2 text-sm font-black text-[#3D2B1F] hover:text-[#C15E28] transition-colors"
-            >
-              <Facebook size={14} className="text-[#1877F2] opacity-80" />
-              <span className="underline underline-offset-4 decoration-[#D8C6A8]">محمد حسام</span>
-              <ExternalLink size={12} className="opacity-40" />
-            </a>
-          </div>
-
           <div className="mt-10 text-[9px] font-black text-gray-300 uppercase tracking-[0.2em]">
             جميع الحقوق محفوظة © {new Date().getFullYear()}
           </div>
@@ -590,21 +552,21 @@ const App: React.FC = () => {
 
       {isAdmin && showForm && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-[#3D2B1F]/60 backdrop-blur-sm no-print overflow-y-auto">
-          <div className="w-full max-w-2xl bg-white rounded-[1.5rem] md:rounded-[3rem] shadow-2xl overflow-hidden relative border-2 md:border-[6px] border-[#D8C6A8]/40 animate-modal-zoom my-4">
-            <button onClick={() => { setShowForm(false); setEditingProduct(null); }} className="absolute top-4 left-4 md:top-8 md:left-8 p-3 bg-[#F5F0E1] text-[#C15E28] rounded-2xl hover:bg-rose-500 hover:text-white transition-all z-20 shadow-md active:scale-90"><X size={20} /></button>
-            <ProductForm initialProduct={editingProduct || undefined} onAdd={handleAddOrUpdateProduct} onCancel={() => { setShowForm(false); setEditingProduct(null); }} />
+          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 relative">
+            <button onClick={() => setShowForm(false)} className="absolute top-4 left-4 p-2 hover:bg-gray-100 rounded-full"><X size={24} /></button>
+            <ProductForm
+              initialProduct={editingProduct || undefined}
+              onSubmit={handleAddOrUpdateProduct}
+            />
           </div>
         </div>
       )}
 
-      {selectedProduct && !productToDelete && (
+      {selectedProduct && (
         <ProductDetailModal
           product={selectedProduct}
-          isAdmin={isAdmin}
           onClose={() => setSelectedProduct(null)}
-          onEdit={(p) => { setSelectedProduct(null); setEditingProduct(p); setShowForm(true); }}
-          onDelete={() => setProductToDelete(selectedProduct)}
-          onAddToCart={() => { addToCart(selectedProduct); }}
+          onAddToCart={() => { addToCart(selectedProduct); setSelectedProduct(null); }}
         />
       )}
     </div>
