@@ -1,0 +1,7 @@
+{
+  "name": "متجر العروض الذكي - Smart Offers Store",
+  "description": "منصة احترافية لإنشاء قوائم المنتجات مع الأسعار والخصومات، مصممة للعرض الجذاب والطباعة السهلة.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
