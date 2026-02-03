@@ -234,7 +234,7 @@ const App: React.FC = () => {
       )}
 
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 glass-nav no-print">
+      <nav className="sticky top-0 z-50 glass-nav no-print" style="padding:10px 0px;">
         <div className="max-w-[95%] xl:max-w-[1440px] mx-auto px-4 lg:px-6 h-18 md:h-24 flex items-center justify-between gap-4">
           <div className="flex items-center gap-4 shrink-0">
             <div className="logo-icon-container">
