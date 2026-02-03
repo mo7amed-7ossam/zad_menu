@@ -169,7 +169,7 @@ const App: React.FC = () => {
 
   const handleCheckout = () => {
     const phoneNumber = "201030506927";
-    const message = `🌟 *طلب جديد من متجر زاد المتميز* 🌟\n\n` +
+    const message = `🌟 *طلب جديد من متجر زاد* 🌟\n\n` +
       cart.map(item => {
         const itemSavings = (item.originalPrice - item.currentPrice) * item.quantity;
         return `📍 *${item.name}*\n   الكمية: ${item.quantity}\n   السعر: ${item.currentPrice * item.quantity} ج.م ${itemSavings > 0 ? `(وفرتِ فيها ${itemSavings} ج.م)` : ''}`;
