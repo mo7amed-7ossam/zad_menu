@@ -288,7 +288,7 @@ const App: React.FC = () => {
           <div className="flex items-center gap-2 md:gap-3 shrink-0">
             <button
               onClick={() => setIsAdmin(!isAdmin)}
-              className={`flex items-center gap-2 px-3 md:px-5 py-3 rounded-2xl font-black text-[10px] md:text-xs transition-all border-2 ${isAdmin
+              className={`hidden flex items-center gap-2 px-3 md:px-5 py-3 rounded-2xl font-black text-[10px] md:text-xs transition-all border-2 ${isAdmin
                   ? 'bg-[#FDFBF7] text-[#3D2B1F] border-[#D8C6A8]/40 hover:border-[#C15E28]'
                   : 'bg-[#C15E28] text-white border-[#C15E28] shadow-lg'
                 }`}
