@@ -244,7 +244,7 @@ const App: React.FC = () => {
               </div>
             </div>
             <div className="hidden lg:block">
-              <h1 className="text-xl font-black text-[#3D2B1F] leading-none mb-1">زاد</h1>
+              <h1 className="text-xl font-black text-[#3D2B1F] leading-none mb-1">زاد المتميز</h1>
               <p className="text-[9px] font-extrabold text-[#C15E28] uppercase tracking-[0.25em] opacity-80">البيت دايماً عَمْرَان</p>
             </div>
           </div>
