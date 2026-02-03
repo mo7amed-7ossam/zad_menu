@@ -12,7 +12,8 @@ import ProductForm from './components/ProductForm';
 import ProductDetailModal from './components/ProductDetailModal';
 
 // استيراد المنتجات مباشرة من ملف JSON
-import initialProducts from './data/products.json';
+// import initialProducts from './data/products.json';
+import initialProducts from 'https://drive.google.com/uc?export=download&id=1JqcoPTbwI37L5p2JNV2biilf-LTSQsTw';
 
 // تحديد النوع بشكل صريح (مهم لتجنب أخطاء TypeScript)
 const productsFromJson: Product[] = initialProducts as Product[];
