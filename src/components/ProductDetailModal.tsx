@@ -30,7 +30,7 @@ const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ product, isAdmi
   };
 
   return (
-    <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 bg-[#3D2B1F]/70 animate-backdrop overflow-y-auto no-print" onClick={onClose}>
+    <div className="hidden fixed inset-0 z-[150] flex items-center justify-center p-4 bg-[#3D2B1F]/70 animate-backdrop overflow-y-auto no-print" onClick={onClose}>
       <div className="w-full max-w-4xl bg-white rounded-[2.5rem] shadow-[0_32px_64px_-12px_rgba(61,43,31,0.3)] overflow-hidden relative animate-modal-zoom my-8" onClick={e => e.stopPropagation()}>
         <div className="absolute top-6 left-6 z-20 flex gap-2">
           {isAdmin && (
