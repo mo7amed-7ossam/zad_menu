@@ -244,7 +244,7 @@ const App: React.FC = () => {
               </div>
             </div>
             <div className="hidden lg:block">
-              <h1 className="text-xl font-black text-[#3D2B1F] leading-none mb-1">زاد المتميز</h1>
+              <h1 className="text-xl font-black text-[#3D2B1F] leading-none mb-1">زاد</h1>
               <p className="text-[9px] font-extrabold text-[#C15E28] uppercase tracking-[0.25em] opacity-80">البيت دايماً عَمْرَان</p>
             </div>
           </div>
@@ -540,10 +540,10 @@ const App: React.FC = () => {
             <div className="w-14 h-14 md:w-20 md:h-20 rounded-2xl overflow-hidden border-2 border-[#D8C6A8]/30 mb-4 shadow-xl">
               <img src={zadLogo} alt="زاد" className="w-full h-full object-cover" />
             </div>
-            <p className="text-sm font-black text-[#3D2B1F] tracking-[0.3em] uppercase opacity-60">ZAD PREMIUM STORE</p>
+            <p className="text-sm font-black text-[#3D2B1F] tracking-[0.3em] uppercase opacity-60">ZAD STORE</p>
           </div>
 
-          <p className="text-xs md:text-sm font-bold text-[#C15E28] mb-8">زاد المتميز – البيت دايماً عَمْرَان 🤍</p>
+          <p className="text-xs md:text-sm font-bold text-[#C15E28] mb-8">زاد – البيت دايماً عَمْرَان 🤍</p>
 
           <div className="w-full max-w-[200px] h-px bg-gradient-to-r from-transparent via-[#D8C6A8]/40 to-transparent mb-8"></div>
 
