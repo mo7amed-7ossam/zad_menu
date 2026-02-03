@@ -82,12 +82,19 @@ const App: React.FC = () => {
   }, [products]);
 
   const filteredProducts = useMemo(() => {
+    const s = searchQuery.toLowerCase();
+
     return products.filter(p => {
-      const matchesCategory = activeCategory === 'الكل' || (p.category || 'أخرى') === activeCategory;
-      const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
+      if (typeof p.name !== 'string') return false;
+
+      const category = typeof p.category === 'string' ? p.category : 'أخرى';
+      const matchesCategory = activeCategory === 'الكل' || category === activeCategory;
+      const matchesSearch = p.name.toLowerCase().includes(s);
+
       return matchesCategory && matchesSearch;
     });
   }, [products, activeCategory, searchQuery]);
+
 
   const scrollToProducts = () => {
     productsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
