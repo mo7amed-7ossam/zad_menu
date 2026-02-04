@@ -12,14 +12,26 @@ import ProductForm from './components/ProductForm';
 import ProductDetailModal from './components/ProductDetailModal';
 
 // استيراد المنتجات مباشرة من ملف JSON
-// import initialProducts from './data/products.json';
-import initialProducts from 'https://drive.google.com/uc?export=download&id=1JqcoPTbwI37L5p2JNV2biilf-LTSQsTw';
-
-// تحديد النوع بشكل صريح (مهم لتجنب أخطاء TypeScript)
-const productsFromJson: Product[] = initialProducts as Product[];
+// استيراد المنتجات مباشرة من ملف JSON
+import mainProducts from './data/products.json';
+import extraProducts from './data/moreproducts.json';
 
 const App: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>(productsFromJson);
+  const [products, setProducts] = useState<Product[]>(() => {
+    const combined = [...mainProducts, ...extraProducts] as Product[];
+
+    // إزالة التكرارات بناءً على id (مهم جدًا)
+    const uniqueMap = new Map<string, Product>();
+    combined.forEach(item => {
+      const key = String(item.id);           // أو item.id إذا كان string أصلاً
+      if (!uniqueMap.has(key)) {
+        uniqueMap.set(key, item);
+      }
+    });
+
+    return Array.from(uniqueMap.values());
+  });
+
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showCart, setShowCart] = useState(false);
@@ -32,14 +44,15 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
-  const productsRef = useRef<HTMLDivElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   const [isAdmin, setIsAdmin] = useState(() => {
     const savedMode = localStorage.getItem('zad-admin-mode');
     return savedMode === 'true';
   });
 
+  const productsRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+// باقي الـ useEffect و الدوال والـ return زي ما هي ...
   const zadLogo = "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-1/615512750_1532706574470230_2137950251770969990_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=111&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=DBlRHtNUA5gQ7kNvwGcQkXv&_nc_oc=AdnPbyCOkgb8C0B0i8dS10KruWYFSTXilBM3aYF49KX6fVj9E3hRw9FBocCHWDFDljQ&_nc_zt=24&_nc_ht=scontent.fcai19-12.fna&_nc_gid=pczF0xNpyk_CH7Q5RXNE3g&oh=00_AfsySIrqeJPoPkF6CC6aReW0iAcVUEEha-NvExV7UWM5aw&oe=6987046F";
 
   // تحميل السلة فقط من localStorage
