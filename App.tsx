@@ -412,7 +412,7 @@ const App: React.FC = () => {
               </div>
             )}
 
-            <div className="product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+            <div className="product-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 md:gap-12">
               {filteredProducts.map((product, idx) => (
                 <div
                   key={product.id}
