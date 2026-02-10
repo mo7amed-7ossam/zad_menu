@@ -72,7 +72,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = true, onDe
         </div>
       </div>
 
-      <div className="p-5 md:p-6 pt-2 flex flex-col flex-1 gap-3">
+      <div className="p-5 pt-2 flex flex-col flex-1 gap-3">
         <div className="space-y-2">
           <div className="flex items-center justify-between gap-2">
             <span className="text-[10px] md:text-xs font-black text-[#C15E28] bg-[#F5F0E1] px-3 py-1 rounded-lg">{product.category || 'عام'}</span>
@@ -106,7 +106,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = true, onDe
             <button 
               onClick={handleAddToCart}
               disabled={isAdded}
-              className={`w-full py-4 rounded-2xl text-xs md:text-sm font-black transition-all duration-500 flex items-center justify-center gap-2.5 shadow-lg active:scale-95 group overflow-hidden relative ${
+              className={`hidden w-full py-4 rounded-2xl text-xs md:text-sm font-black transition-all duration-500 flex items-center justify-center gap-2.5 shadow-lg active:scale-95 group overflow-hidden relative ${
                 isAdded 
                 ? 'bg-green-500 text-white shadow-green-200' 
                 : 'bg-[#3D2B1F] text-white hover:bg-[#C15E28]'
