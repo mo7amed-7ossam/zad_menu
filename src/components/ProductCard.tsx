@@ -106,7 +106,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAdmin = true, onDe
             <button 
               onClick={handleAddToCart}
               disabled={isAdded}
-              className={`hidden w-full py-4 rounded-2xl text-xs md:text-sm font-black transition-all duration-500 flex items-center justify-center gap-2.5 shadow-lg active:scale-95 group overflow-hidden relative ${
+              className={`w-full py-4 rounded-2xl text-xs md:text-sm font-black transition-all duration-500 flex items-center justify-center gap-2.5 shadow-lg active:scale-95 group overflow-hidden relative ${
                 isAdded 
                 ? 'bg-green-500 text-white shadow-green-200' 
                 : 'bg-[#3D2B1F] text-white hover:bg-[#C15E28]'
