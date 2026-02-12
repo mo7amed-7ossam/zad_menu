@@ -39,7 +39,7 @@ const App: React.FC = () => {
     return savedMode === 'true';
   });
 
-  const zadLogo = "https://scontent.fcai19-12.fna.fbcdn.net/v/t39.30808-1/615512750_1532706574470230_2137950251770969990_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=111&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=DBlRHtNUA5gQ7kNvwGcQkXv&_nc_oc=AdnPbyCOkgb8C0B0i8dS10KruWYFSTXilBM3aYF49KX6fVj9E3hRw9FBocCHWDFDljQ&_nc_zt=24&_nc_ht=scontent.fcai19-12.fna&_nc_gid=pczF0xNpyk_CH7Q5RXNE3g&oh=00_AfsySIrqeJPoPkF6CC6aReW0iAcVUEEha-NvExV7UWM5aw&oe=6987046F";
+  const zadLogo = "https://raw.githubusercontent.com/mo7amed-7ossam/zad_menu/refs/heads/main/zad-logo.png";
 
   // تحميل السلة فقط من localStorage
   useEffect(() => {
